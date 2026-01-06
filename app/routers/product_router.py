@@ -22,23 +22,25 @@ def get_db():
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
-@router.get("/")
-def home_product(request:Request, db: db_dependency,page: int = 1,):
-    sample_products = db.query(Product).all()
+@router.get("")
+def home_product(request: Request, db: db_dependency, page: int = 1):
+    products = db.query(Product).all()
+    if not products:
+        raise HTTPException(status_code=404, detail="No products found")
 
-    if not sample_products:
-        raise HTTPException(status_code = 404, detail ="Not Found")
-    
-    return templates.TemplateResponse("home.html",{"request":request,"products":sample_products})
+    return templates.TemplateResponse(
+        "home.html",
+        {"request": request, "products": products}
+    )
 
 
 @router.get("/{id}")
-def get_product(request:Request,id:int,db:db_dependency):
+def get_product(request: Request, id: int, db: db_dependency):
+    product = db.query(Product).filter(Product.id == id).first()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
 
-    get_product = db.query(Product).filter(Product.id == id).first()
-
-    if not get_product:
-        raise HTTPException(status_code =404,detail ="Not Found")
-    
-    return templates.TemplateResponse("product_detail.html",{"request":request,"show_product":get_product})
-
+    return templates.TemplateResponse(
+        "product_detail.html",
+        {"request": request, "show_product": product}
+    )
