@@ -26,7 +26,7 @@ def startup():
 
 @app.get("/")
 def root():
-    return RedirectResponse(url="/products")
+    return RedirectResponse(url="/products/")
 
 
 app.mount("/static",StaticFiles(directory="app/static"), name="static")
