@@ -12,7 +12,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 
 
-router = APIRouter(prefix="/cart")
+router = APIRouter(prefix="/cart", tags=["Cart"])
 templates = Jinja2Templates(directory="app/templates")
 
 

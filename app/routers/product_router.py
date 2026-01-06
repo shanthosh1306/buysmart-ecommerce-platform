@@ -22,10 +22,10 @@ def get_db():
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
-@router.get("")
-@router.get("/")
-def home_product(request: Request, db: db_dependency, page: int = 1):
+@router.get("/", include_in_schema=True)
+def home_product(request: Request, db: db_dependency):
     products = db.query(Product).all()
+
     if not products:
         raise HTTPException(status_code=404, detail="No products found")
 

@@ -13,7 +13,7 @@ from app.auth.dependencies import get_current_user_token
 from app.models.users import User
 from fastapi.responses import RedirectResponse
 
-router = APIRouter(prefix="/order")
+router = APIRouter(prefix="/order", tags=["Orders"])
 
 templates = Jinja2Templates(directory="app/templates")
 
