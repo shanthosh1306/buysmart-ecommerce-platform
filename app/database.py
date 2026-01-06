@@ -1,12 +1,21 @@
-from sqlalchemy import create_engine 
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-DATABASE_URL = "mysql+pymysql://root:Root2613@127.0.0.1:3306/ecommerce_db"
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-engine = create_engine(DATABASE_URL)
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-SessionLocal = sessionmaker(autocommit=False,autoflush=False,bind=engine)
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL environment variable not set")
+
+engine = create_engine(
+    DATABASE_URL,
+    pool_pre_ping=True
+)
+
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine
+)
 
 Base = declarative_base()
-
-
